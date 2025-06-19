@@ -1,9 +1,14 @@
-use axum::{response::Html, routing::get, Router};
+use axum::{routing::get, Json, Router};
+use serde_json::{json, Value};
+
+mod anime;
 
 #[tokio::main]
 async fn main() {
     // build our application with a route
-    let app = Router::new().route("/", get(handler));
+    let app = Router::new()
+        .route("/", get(pong))
+        .merge(anime::data_route::routes());
 
     // run it
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000")
@@ -13,6 +18,8 @@ async fn main() {
     axum::serve(listener, app).await.unwrap();
 }
 
-async fn handler() -> Html<&'static str> {
-    Html("<h1>Hello, World!</h1>")
+async fn pong() -> Json<Value> {
+    Json(json!({
+        "pong": "!",
+    }))
 }
