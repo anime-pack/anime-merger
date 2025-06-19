@@ -1,0 +1,8 @@
+services:
+  anime-merger:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: anime-merger
+    ports:
+      - "3000:3000"
