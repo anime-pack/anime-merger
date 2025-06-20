@@ -5,25 +5,25 @@ use serde::Deserialize;
 use serde_json::{json, Value};
 
 pub fn routes() -> Router {
-	Router::new().route("/anime", post(anime_data))
+	Router::new().route("/manga", post(manga_data))
 }
 
 #[derive(Debug, Deserialize)]
-struct AnimeRequestPayload {
+struct MangaRequestPayload {
     id: i32,
 }
 
-async fn anime_data(
-	payload: Json<AnimeRequestPayload>,
+async fn manga_data(
+	payload: Json<MangaRequestPayload>,
 ) -> Result<Json<Value> , ()> {
 
     let client = JikanClient::new();
-    let anime = client.get_anime_full(payload.id)
+    let manga = client.get_manga_full(payload.id)
     .await
     .map_err(|_| ());
 
 	let body = Json(json!({
-		"data": anime,
+		"data": manga,
 	}));
 
 	Ok(body)
