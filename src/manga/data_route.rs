@@ -1,0 +1,30 @@
+use axum::routing::get;
+use axum::{Json, Router};
+use jikan_moe::JikanClient;
+use serde::Deserialize;
+use serde_json::{json, Value};
+
+pub fn routes() -> Router {
+	Router::new().route("/manga", get(manga_data))
+}
+
+#[derive(Debug, Deserialize)]
+struct MangaRequestPayload {
+    id: i32,
+}
+
+async fn manga_data(
+	payload: Json<MangaRequestPayload>,
+) -> Result<Json<Value> , ()> {
+
+    let client = JikanClient::new();
+    let manga = client.get_manga_full(payload.id)
+    .await
+    .map_err(|_| ());
+
+	let body = Json(json!({
+		"data": manga,
+	}));
+
+	Ok(body)
+}
