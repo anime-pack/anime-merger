@@ -1,11 +1,11 @@
-use axum::routing::get;
+use axum::routing::post;
 use axum::{Json, Router};
 use jikan_moe::JikanClient;
 use serde::Deserialize;
 use serde_json::{json, Value};
 
 pub fn routes() -> Router {
-	Router::new().route("/manga", get(manga_data))
+	Router::new().route("/manga", post(manga_data))
 }
 
 #[derive(Debug, Deserialize)]
