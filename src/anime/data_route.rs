@@ -5,7 +5,7 @@ use serde::Deserialize;
 use serde_json::{Value, json};
 
 pub fn routes() -> Router {
-	Router::new().route("/anime", post(anime_data))
+    Router::new().route("/anime", post(anime_data))
 }
 
 #[derive(Debug, Deserialize)]
